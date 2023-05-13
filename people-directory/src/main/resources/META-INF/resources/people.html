@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Byggdagboken Test Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/wingcss/0.1.8/wing.min.css"/>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script type="text/javascript">
+      var app = angular.module("PeopleManagement", []);
+
+      //Controller Part
+      app.controller("PeopleManagementController", function ($scope, $http) {
+
+        //Initialize page with default data which is blank in this example
+        $scope.people = [];
+
+        $scope.form = {
+          id:"",  
+          name: "",
+          country: ""
+        };
+
+        //Now load the data from server
+        _refreshPageData();
+
+        //HTTP POST methods for add fruits
+        $scope.add = function () {
+          var data = { "id": $scope.form.id, "name": $scope.form.name, "country": $scope.form.country };
+
+          $http({
+            method: "POST",
+            url: '/people',
+            data: angular.toJson(data),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }).then(_success, _error);
+        };
+
+        /* Private Methods */
+        //HTTP GET- get all fruits collection
+        function _refreshPageData() {
+          $http({
+            method: 'GET',
+            url: '/people'
+          }).then(function successCallback(response) {
+            $scope.people = response.data;
+          }, function errorCallback(response) {
+            console.log(response.statusText);
+          });
+        }
+
+        function _success(response) {
+          _refreshPageData();
+          _clearForm();
+        }
+
+        function _error(response) {
+          alert(response.data.message || response.statusText);
+        }
+
+        //Clear the form
+        function _clearForm() {
+          $scope.form.id = "";
+          $scope.form.name = "";
+          $scope.form.country = "";
+        }
+      });
+    </script>
+</head>
+<body ng-app="PeopleManagement" ng-controller="PeopleManagementController">
+
+<div class="container">
+    <h1>REST Service - People</h1>
+
+    <h3>Add a person</h3>
+    <form ng-submit="add()">
+        <div class="row">
+            <div class="col-6"><input type="text" placeholder="Id" ng-model="form.id" size="60"/></div>
+        </div>
+        <div class="row">
+            <div class="col-6"><input type="text" placeholder="Name" ng-model="form.name" size="60"/></div>
+        </div>
+        <div class="row">
+            <div class="col-6"><input type="text" placeholder="Country" ng-model="form.country" size="60"/></div>
+        </div>
+        <input type="submit" value="Save"/>
+    </form>
+
+    <h3>Person List</h3>
+    <div class="row">
+        <div class="col-2">Id</div>
+        <div class="col-4">Name</div>
+        <div class="col-6">Country</div>
+    </div>
+    <div class="row" ng-repeat="person in people">
+        <div class="col-2">{{ person.id }}</div>
+        <div class="col-4">{{ person.name }}</div>
+        <div class="col-6">{{ person.country }}</div>
+    </div>
+</div>
+
+</body>
+</html>
