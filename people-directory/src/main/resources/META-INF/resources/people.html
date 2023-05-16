@@ -8,24 +8,19 @@
     <script type="text/javascript">
       var app = angular.module("PeopleManagement", []);
 
-      //Controller Part
       app.controller("PeopleManagementController", function ($scope, $http) {
 
-        //Initialize page with default data which is blank in this example
         $scope.people = [];
 
         $scope.form = {
-          id:"",  
           name: "",
           country: ""
         };
 
-        //Now load the data from server
         _refreshPageData();
 
-        //HTTP POST methods for add fruits
         $scope.add = function () {
-          var data = { "id": $scope.form.id, "name": $scope.form.name, "country": $scope.form.country };
+          var data = { "name": $scope.form.name, "country": $scope.form.country };
 
           $http({
             method: "POST",
@@ -37,8 +32,6 @@
           }).then(_success, _error);
         };
 
-        /* Private Methods */
-        //HTTP GET- get all fruits collection
         function _refreshPageData() {
           $http({
             method: 'GET',
@@ -61,7 +54,6 @@
 
         //Clear the form
         function _clearForm() {
-          $scope.form.id = "";
           $scope.form.name = "";
           $scope.form.country = "";
         }
@@ -71,13 +63,10 @@
 <body ng-app="PeopleManagement" ng-controller="PeopleManagementController">
 
 <div class="container">
-    <h1>REST Service - People</h1>
+    <h1>People Directory</h1>
 
     <h3>Add a person</h3>
     <form ng-submit="add()">
-        <div class="row">
-            <div class="col-6"><input type="text" placeholder="Id" ng-model="form.id" size="60"/></div>
-        </div>
         <div class="row">
             <div class="col-6"><input type="text" placeholder="Name" ng-model="form.name" size="60"/></div>
         </div>
@@ -87,7 +76,7 @@
         <input type="submit" value="Save"/>
     </form>
 
-    <h3>Person List</h3>
+    <h3>People List</h3>
     <div class="row">
         <div class="col-2">Id</div>
         <div class="col-4">Name</div>

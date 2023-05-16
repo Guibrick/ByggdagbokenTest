@@ -1,9 +1,10 @@
 package org.acme.rest.json;
+
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.Random;
 import java.util.Set;
 
-import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -14,24 +15,20 @@ public class PersonResource {
     private Set<Person> people = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
 
     public PersonResource() {
-        people.add(new Person(01, "John", "France"));
-        people.add(new Person(02, "Paula", "India"));
+        people.add(new Person(421262279, "Julio", "Spain"));
+        people.add(new Person(15927859, "Maria", "Greece"));
+        people.add(new Person(974573565, "Sylwia", "Poland"));
+        people.add(new Person(22729745, "Paul", "Brazil"));
     }
 
     @GET
-    public Set<Person> list() {
+    public Set<Person> GetAll() {
         return people;
     }
 
     @POST
-    public Set<Person> add(Person person) {
-        people.add(person);
-        return people;
-    }
-
-    @DELETE
-    public Set<Person> delete(Person person) {
-        people.removeIf(existingPerson -> existingPerson.equals(person.id));
+    public Set<Person> AddPerson(Person person) {
+        people.add(new Person(person.id= new Random().nextInt(), person.name, person.country) );
         return people;
     }
 }
