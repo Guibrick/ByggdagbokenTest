@@ -4,7 +4,9 @@ This project is a test developed in Quarkus, where the main goal is to store per
 
 ## Run the application
 
-To run the app you can use:
+First, go to the ***people-directory*** folder.
+
+Then, to run the app you can use:
 
 ```
 mvn quarkus:dev
